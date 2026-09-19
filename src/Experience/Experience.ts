@@ -6,7 +6,7 @@ import { DeveloperWorkspace } from './World/DeveloperWorkspace';
 import { RayCaster } from './RayCaster';
 import { SoundEngine } from './SoundEngine';
 import { EventEmitter } from './EventEmitter';
-import { QualityLevel, SectionId } from '../types';
+import { QualityLevel, SectionId, ThemeMode } from '../types';
 
 export class Experience extends EventEmitter {
   private static instance: Experience | null = null;
@@ -21,8 +21,13 @@ export class Experience extends EventEmitter {
   public rayCaster!: RayCaster;
   public soundEngine!: SoundEngine;
   public quality: QualityLevel = 'high';
+  public theme: ThemeMode = 'dark';
 
-  constructor(canvas: HTMLCanvasElement, initialQuality: QualityLevel = 'high') {
+  constructor(
+    canvas: HTMLCanvasElement,
+    initialQuality: QualityLevel = 'high',
+    initialTheme: ThemeMode = 'dark'
+  ) {
     super();
 
     if (Experience.instance) {
@@ -32,6 +37,7 @@ export class Experience extends EventEmitter {
 
     this.canvas = canvas;
     this.quality = initialQuality;
+    this.theme = initialTheme;
 
     this.init();
   }
@@ -41,10 +47,15 @@ export class Experience extends EventEmitter {
   }
 
   private init(): void {
+    const isLight = this.theme === 'light';
+
     // 1. Scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x04060a);
-    this.scene.fog = new THREE.FogExp2(0x04060a, 0.04);
+    this.scene.background = new THREE.Color(isLight ? 0xf1f5f9 : 0x04060a);
+    this.scene.fog = new THREE.FogExp2(
+      isLight ? 0xf1f5f9 : 0x04060a,
+      isLight ? 0.025 : 0.04
+    );
 
     // 2. Sizes & Time
     const dprLimit = this.quality === 'high' ? 1.5 : this.quality === 'medium' ? 1.25 : 1.0;
@@ -73,6 +84,9 @@ export class Experience extends EventEmitter {
 
     // 6. World (Developer Workspace)
     this.workspace = new DeveloperWorkspace(this.scene, this.quality);
+    if (isLight) {
+      this.workspace.setTheme('light');
+    }
 
     // 7. RayCaster
     this.rayCaster = new RayCaster(this.camera, this.sizes, this.canvas);
@@ -96,6 +110,25 @@ export class Experience extends EventEmitter {
     });
   }
 
+  public setTheme(theme: ThemeMode): void {
+    this.theme = theme;
+    const isLight = theme === 'light';
+
+    if (this.scene) {
+      this.scene.background = new THREE.Color(isLight ? 0xf1f5f9 : 0x04060a);
+      if (this.scene.fog instanceof THREE.FogExp2) {
+        this.scene.fog.color.setHex(isLight ? 0xf1f5f9 : 0x04060a);
+        this.scene.fog.density = isLight ? 0.025 : 0.04;
+      }
+    }
+
+    if (this.workspace) {
+      this.workspace.setTheme(theme);
+    }
+
+    this.trigger('themeChange', theme);
+  }
+
   public setQuality(level: QualityLevel): void {
     this.quality = level;
     const dprLimit = level === 'high' ? 1.5 : level === 'medium' ? 1.25 : 1.0;
@@ -106,6 +139,9 @@ export class Experience extends EventEmitter {
     // Rebuild workspace for particle count & shadow differences
     this.workspace.destroy();
     this.workspace = new DeveloperWorkspace(this.scene, this.quality);
+    if (this.theme === 'light') {
+      this.workspace.setTheme('light');
+    }
     this.rayCaster.setInteractiveObjects(this.workspace.interactiveObjects);
     this.trigger('qualityChange', level);
   }

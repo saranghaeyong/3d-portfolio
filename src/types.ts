@@ -10,6 +10,8 @@ export type SectionId =
 
 export type QualityLevel = 'low' | 'medium' | 'high';
 
+export type ThemeMode = 'dark' | 'light';
+
 export interface EducationItem {
   id: string;
   order: number;

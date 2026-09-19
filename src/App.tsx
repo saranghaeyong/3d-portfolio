@@ -12,12 +12,16 @@ import { ResumeModal } from './components/ResumeModal';
 import { ContactPanel } from './components/ContactPanel';
 import { TerminalModal } from './components/TerminalModal';
 import { NavigationMenu } from './components/NavigationMenu';
-import { QualityLevel, SectionId } from './types';
+import { QualityLevel, SectionId, ThemeMode } from './types';
 import { InteractiveObjectData } from './Experience/World/DeveloperWorkspace';
+import { getInitialTheme, applyTheme } from './utils/themeManager';
 
 export function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const experienceRef = useRef<Experience | null>(null);
+
+  // Theme State with LocalStorage Persistence
+  const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
 
   // App UI State
   const [hasEntered, setHasEntered] = useState<boolean>(false);
@@ -36,13 +40,16 @@ export function App() {
   useEffect(() => {
     if (!canvasRef.current) return;
 
+    // Apply initial theme to document DOM
+    applyTheme(theme);
+
     // Detect prefers-reduced-motion or low power
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const initialQuality: QualityLevel = prefersReducedMotion ? 'low' : 'high';
     setQuality(initialQuality);
 
-    // Initialize 3D Experience
-    const exp = new Experience(canvasRef.current, initialQuality);
+    // Initialize 3D Experience with user theme
+    const exp = new Experience(canvasRef.current, initialQuality, theme);
     experienceRef.current = exp;
 
     // Listen for 3D RayCaster events
@@ -113,6 +120,15 @@ export function App() {
     };
   }, []);
 
+  const handleToggleTheme = () => {
+    const nextTheme: ThemeMode = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+    applyTheme(nextTheme);
+    if (experienceRef.current) {
+      experienceRef.current.setTheme(nextTheme);
+    }
+  };
+
   const handleNavigate = (section: SectionId) => {
     setCurrentSection(section);
     if (experienceRef.current) {
@@ -153,7 +169,11 @@ export function App() {
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#04060a] text-slate-100 font-sans">
+    <div
+      className={`relative w-screen h-screen overflow-hidden font-sans transition-colors duration-300 ${
+        theme === 'light' ? 'bg-[#f1f5f9] text-slate-900' : 'bg-[#04060a] text-slate-100'
+      }`}
+    >
       {/* 3D WebGL Canvas Layer */}
       <canvas
         ref={canvasRef}
@@ -178,6 +198,8 @@ export function App() {
           onToggleMute={handleToggleMute}
           quality={quality}
           onChangeQuality={handleChangeQuality}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
           hoveredObject={hoveredObject}
         />
       )}
@@ -242,6 +264,8 @@ export function App() {
         <TerminalModal
           onClose={() => setTerminalOpen(false)}
           onNavigate={handleNavigate}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
         />
       )}
 
@@ -251,6 +275,8 @@ export function App() {
           currentSection={currentSection}
           onNavigate={handleNavigate}
           onClose={() => setMenuOpen(false)}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
         />
       )}
     </div>

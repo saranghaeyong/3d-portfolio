@@ -1,19 +1,24 @@
 import React from 'react';
-import { SectionId } from '../types';
+import { SectionId, ThemeMode } from '../types';
 import { NAV_STATIONS, PERSONAL_DATA } from '../data/portfolioData';
 import { X, ArrowRight, Compass } from 'lucide-react';
 import { SoundEngine } from '../Experience/SoundEngine';
+import { ThemeToggle } from './ThemeToggle';
 
 interface NavigationMenuProps {
   currentSection: SectionId;
   onNavigate: (section: SectionId) => void;
   onClose: () => void;
+  theme?: ThemeMode;
+  onToggleTheme?: () => void;
 }
 
 export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   currentSection,
   onNavigate,
-  onClose
+  onClose,
+  theme,
+  onToggleTheme
 }) => {
   const handleSelect = (id: SectionId) => {
     SoundEngine.getInstance().playClick();
@@ -88,10 +93,20 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           })}
         </div>
 
-        {/* Footer Identity */}
-        <div className="pt-4 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
-          <div>{PERSONAL_DATA.name}</div>
-          <div className="text-sky-400">{PERSONAL_DATA.primaryTitle}</div>
+        {/* Footer Identity & Theme Toggle */}
+        <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
+          <div className="flex items-center space-x-2">
+            <span>{PERSONAL_DATA.name}</span>
+            <span className="text-slate-600">|</span>
+            <span className="text-sky-400">{PERSONAL_DATA.primaryTitle}</span>
+          </div>
+
+          {theme && onToggleTheme && (
+            <div className="flex items-center space-x-2">
+              <span className="text-[10px] uppercase text-slate-400">THEME:</span>
+              <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+            </div>
+          )}
         </div>
       </div>
     </div>

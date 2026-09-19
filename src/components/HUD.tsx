@@ -1,8 +1,9 @@
 import React from 'react';
-import { SectionId, QualityLevel } from '../types';
+import { SectionId, QualityLevel, ThemeMode } from '../types';
 import { PERSONAL_DATA, NAV_STATIONS } from '../data/portfolioData';
 import { Volume2, VolumeX, Terminal, FileText, Menu, Compass, Sparkles } from 'lucide-react';
 import { SoundEngine } from '../Experience/SoundEngine';
+import { ThemeToggle } from './ThemeToggle';
 
 interface HUDProps {
   currentSection: SectionId;
@@ -14,6 +15,8 @@ interface HUDProps {
   onToggleMute: () => void;
   quality: QualityLevel;
   onChangeQuality: (q: QualityLevel) => void;
+  theme: ThemeMode;
+  onToggleTheme: () => void;
   hoveredObject: { label: string; type: string } | null;
 }
 
@@ -27,6 +30,8 @@ export const HUD: React.FC<HUDProps> = ({
   onToggleMute,
   quality,
   onChangeQuality,
+  theme,
+  onToggleTheme,
   hoveredObject
 }) => {
   const currentStationIndex = NAV_STATIONS.findIndex(s => s.id === currentSection);
@@ -38,33 +43,36 @@ export const HUD: React.FC<HUDProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-30 flex flex-col justify-between p-4 md:p-6 font-mono select-none">
+    <div className="fixed inset-0 pointer-events-none z-30 flex flex-col justify-between p-3 sm:p-4 md:p-6 font-mono select-none">
       {/* Top Header Bar */}
       <header className="flex items-start justify-between w-full">
         {/* Top-Left: Personal Identity Branding */}
         <div
           id="hud-identity"
           onClick={() => handleStationClick('intro')}
-          className="pointer-events-auto cursor-pointer group bg-slate-950/70 border border-slate-800/80 backdrop-blur-md px-4 py-2.5 rounded-lg shadow-lg hover:border-sky-500/50 transition-colors"
+          className="pointer-events-auto cursor-pointer group bg-slate-950/70 border border-slate-800/80 backdrop-blur-md px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg shadow-lg hover:border-sky-500/50 transition-colors"
         >
           <div className="flex items-center space-x-2">
             <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse" />
-            <h1 className="text-sm font-bold text-white tracking-wider font-sans group-hover:text-sky-400 transition-colors">
+            <h1 className="text-xs sm:text-sm font-bold text-white tracking-wider font-sans group-hover:text-sky-400 transition-colors">
               {PERSONAL_DATA.name}
             </h1>
           </div>
-          <div className="text-[11px] text-sky-400 tracking-wider font-medium">
+          <div className="text-[10px] sm:text-[11px] text-sky-400 tracking-wider font-medium">
             {PERSONAL_DATA.primaryTitle}
           </div>
-          <div className="text-[9px] text-slate-400 tracking-wide hidden sm:block">
+          <div className="text-[9px] text-slate-400 tracking-wide hidden md:block">
             {PERSONAL_DATA.location}
           </div>
         </div>
 
         {/* Top-Right: Controls & Menu */}
-        <div className="flex items-center space-x-2 pointer-events-auto">
+        <div className="flex items-center space-x-1.5 sm:space-x-2 pointer-events-auto">
           {/* Quality Switcher */}
-          <div className="hidden md:flex items-center bg-slate-950/70 border border-slate-800/80 backdrop-blur-md rounded-lg p-1 text-[11px]">
+          <div
+            id="hud-quality-container"
+            className="hidden lg:flex items-center bg-slate-950/70 border border-slate-800/80 backdrop-blur-md rounded-lg p-1 text-[11px]"
+          >
             <span className="px-2 text-slate-400 text-[10px] uppercase font-semibold">GFX:</span>
             {(['low', 'medium', 'high'] as QualityLevel[]).map((lvl) => (
               <button
@@ -84,6 +92,12 @@ export const HUD: React.FC<HUDProps> = ({
               </button>
             ))}
           </div>
+
+          {/* Theme Mode Toggle (Dark / Light) */}
+          <ThemeToggle
+            theme={theme}
+            onToggle={onToggleTheme}
+          />
 
           {/* Sound Toggle */}
           <button
@@ -117,7 +131,7 @@ export const HUD: React.FC<HUDProps> = ({
               onOpenResume();
             }}
             title="View Full Digital Resume"
-            className="flex items-center space-x-1.5 px-3 h-9 bg-sky-500/10 border border-sky-500/40 hover:bg-sky-500/20 backdrop-blur-md rounded-lg text-xs text-sky-400 font-semibold transition-colors cursor-pointer"
+            className="flex items-center space-x-1.5 px-2.5 sm:px-3 h-9 bg-sky-500/10 border border-sky-500/40 hover:bg-sky-500/20 backdrop-blur-md rounded-lg text-xs text-sky-400 font-semibold transition-colors cursor-pointer"
           >
             <FileText size={14} />
             <span className="hidden sm:inline">VIEW CV</span>
@@ -132,7 +146,7 @@ export const HUD: React.FC<HUDProps> = ({
               onOpenMenu();
             }}
             title="Menu & Station Navigation"
-            className="flex items-center space-x-2 px-3 h-9 bg-slate-950/70 border border-slate-800/80 hover:border-sky-500/50 backdrop-blur-md rounded-lg text-xs text-slate-300 hover:text-white transition-colors cursor-pointer"
+            className="flex items-center space-x-1.5 sm:space-x-2 px-2.5 sm:px-3 h-9 bg-slate-950/70 border border-slate-800/80 hover:border-sky-500/50 backdrop-blur-md rounded-lg text-xs text-slate-300 hover:text-white transition-colors cursor-pointer"
           >
             <Menu size={16} />
             <span className="hidden md:inline">NAVIGATE</span>

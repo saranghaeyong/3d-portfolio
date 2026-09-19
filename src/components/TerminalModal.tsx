@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { PERSONAL_DATA } from '../data/portfolioData';
-import { SectionId } from '../types';
+import { SectionId, ThemeMode } from '../types';
 import { Terminal as TerminalIcon, X } from 'lucide-react';
 import { SoundEngine } from '../Experience/SoundEngine';
 
 interface TerminalModalProps {
   onClose: () => void;
   onNavigate: (section: SectionId) => void;
+  theme?: ThemeMode;
+  onToggleTheme?: () => void;
 }
 
 interface CommandLog {
@@ -15,7 +17,7 @@ interface CommandLog {
   output: string | React.ReactNode;
 }
 
-export const TerminalModal: React.FC<TerminalModalProps> = ({ onClose, onNavigate }) => {
+export const TerminalModal: React.FC<TerminalModalProps> = ({ onClose, onNavigate, theme, onToggleTheme }) => {
   const [inputVal, setInputVal] = useState('');
   const [logs, setLogs] = useState<CommandLog[]>([
     {
@@ -26,7 +28,7 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ onClose, onNavigat
     {
       id: 'welcome-2',
       command: 'help',
-      output: 'Type a command: help, about, skills, projects, education, resume, contact, whoami, coffee, clear, exit'
+      output: 'Type a command: help, about, skills, projects, education, resume, theme, whoami, coffee, clear, exit'
     }
   ]);
 
@@ -191,6 +193,24 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ onClose, onNavigat
           ...prev,
           { id, command: cmd, output: 'Nice try. Root access is strictly reserved for the developer.' }
         ]);
+        break;
+
+      case 'theme':
+      case 'dark':
+      case 'light':
+        if (onToggleTheme) {
+          onToggleTheme();
+          const target = cmd === 'theme' ? (theme === 'light' ? 'DARK' : 'LIGHT') : cmd.toUpperCase();
+          setLogs(prev => [
+            ...prev,
+            { id, command: cmd, output: `System workspace switched to ${target} mode.` }
+          ]);
+        } else {
+          setLogs(prev => [
+            ...prev,
+            { id, command: cmd, output: `Current system theme: ${theme ? theme.toUpperCase() : 'DARK'}.` }
+          ]);
+        }
         break;
 
       case 'coffee':

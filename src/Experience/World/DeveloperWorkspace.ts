@@ -32,6 +32,14 @@ export class DeveloperWorkspace {
   private particlesMesh!: THREE.Points;
   private floatingItems: { mesh: THREE.Object3D; baseY: number; speed: number; amp: number }[] = [];
 
+  // Theme lights & materials
+  private ambientLight!: THREE.AmbientLight;
+  private keyLight!: THREE.DirectionalLight;
+  private cyanRim!: THREE.DirectionalLight;
+  private blueBounce!: THREE.PointLight;
+  private floorMat!: THREE.MeshStandardMaterial;
+  private wallMat!: THREE.MeshStandardMaterial;
+
   // Code stream state
   private epoch = 1;
   private codeLines: string[] = [
@@ -67,42 +75,42 @@ export class DeveloperWorkspace {
 
   private buildLighting(quality: QualityLevel): void {
     // Ambient soft fill
-    const ambientLight = new THREE.AmbientLight(0x0f172a, 1.8);
-    this.group.add(ambientLight);
+    this.ambientLight = new THREE.AmbientLight(0x0f172a, 1.8);
+    this.group.add(this.ambientLight);
 
     // Main key light from top-right
-    const keyLight = new THREE.DirectionalLight(0xe2e8f0, 2.2);
-    keyLight.position.set(5, 8, 5);
+    this.keyLight = new THREE.DirectionalLight(0xe2e8f0, 2.2);
+    this.keyLight.position.set(5, 8, 5);
     if (quality !== 'low') {
-      keyLight.castShadow = true;
-      keyLight.shadow.mapSize.width = quality === 'high' ? 1024 : 512;
-      keyLight.shadow.mapSize.height = quality === 'high' ? 1024 : 512;
-      keyLight.shadow.camera.near = 0.5;
-      keyLight.shadow.camera.far = 25;
-      keyLight.shadow.bias = -0.0005;
+      this.keyLight.castShadow = true;
+      this.keyLight.shadow.mapSize.width = quality === 'high' ? 1024 : 512;
+      this.keyLight.shadow.mapSize.height = quality === 'high' ? 1024 : 512;
+      this.keyLight.shadow.camera.near = 0.5;
+      this.keyLight.shadow.camera.far = 25;
+      this.keyLight.shadow.bias = -0.0005;
     }
-    this.group.add(keyLight);
+    this.group.add(this.keyLight);
 
     // Subtle cyan rim light from behind desk
-    const cyanRim = new THREE.DirectionalLight(0x38bdf8, 1.4);
-    cyanRim.position.set(-5, 4, -4);
-    this.group.add(cyanRim);
+    this.cyanRim = new THREE.DirectionalLight(0x38bdf8, 1.4);
+    this.cyanRim.position.set(-5, 4, -4);
+    this.group.add(this.cyanRim);
 
     // Soft blue floor bounce
-    const blueBounce = new THREE.PointLight(0x60a5fa, 1.0, 8);
-    blueBounce.position.set(0, 1.5, 1);
-    this.group.add(blueBounce);
+    this.blueBounce = new THREE.PointLight(0x60a5fa, 1.0, 8);
+    this.blueBounce.position.set(0, 1.5, 1);
+    this.group.add(this.blueBounce);
   }
 
   private buildRoomAndFloor(): void {
     // Floor
     const floorGeo = new THREE.PlaneGeometry(30, 30);
-    const floorMat = new THREE.MeshStandardMaterial({
+    this.floorMat = new THREE.MeshStandardMaterial({
       color: 0x07090e,
       roughness: 0.6,
       metalness: 0.3
     });
-    const floor = new THREE.Mesh(floorGeo, floorMat);
+    const floor = new THREE.Mesh(floorGeo, this.floorMat);
     floor.rotation.x = -Math.PI / 2;
     floor.position.y = 0;
     floor.receiveShadow = true;
@@ -115,14 +123,64 @@ export class DeveloperWorkspace {
 
     // Studio backdrop wall
     const wallGeo = new THREE.PlaneGeometry(30, 16);
-    const wallMat = new THREE.MeshStandardMaterial({
+    this.wallMat = new THREE.MeshStandardMaterial({
       color: 0x05070a,
       roughness: 0.9,
       metalness: 0.1
     });
-    const wall = new THREE.Mesh(wallGeo, wallMat);
+    const wall = new THREE.Mesh(wallGeo, this.wallMat);
     wall.position.set(0, 8, -6);
     this.group.add(wall);
+  }
+
+  public setTheme(theme: 'dark' | 'light'): void {
+    if (theme === 'light') {
+      if (this.ambientLight) {
+        this.ambientLight.color.setHex(0xf8fafc);
+        this.ambientLight.intensity = 2.4;
+      }
+      if (this.keyLight) {
+        this.keyLight.color.setHex(0xffffff);
+        this.keyLight.intensity = 2.8;
+      }
+      if (this.cyanRim) {
+        this.cyanRim.color.setHex(0x0284c7);
+        this.cyanRim.intensity = 1.0;
+      }
+      if (this.blueBounce) {
+        this.blueBounce.color.setHex(0x93c5fd);
+        this.blueBounce.intensity = 0.8;
+      }
+      if (this.floorMat) {
+        this.floorMat.color.setHex(0xe2e8f0);
+      }
+      if (this.wallMat) {
+        this.wallMat.color.setHex(0xedf2f7);
+      }
+    } else {
+      if (this.ambientLight) {
+        this.ambientLight.color.setHex(0x0f172a);
+        this.ambientLight.intensity = 1.8;
+      }
+      if (this.keyLight) {
+        this.keyLight.color.setHex(0xe2e8f0);
+        this.keyLight.intensity = 2.2;
+      }
+      if (this.cyanRim) {
+        this.cyanRim.color.setHex(0x38bdf8);
+        this.cyanRim.intensity = 1.4;
+      }
+      if (this.blueBounce) {
+        this.blueBounce.color.setHex(0x60a5fa);
+        this.blueBounce.intensity = 1.0;
+      }
+      if (this.floorMat) {
+        this.floorMat.color.setHex(0x07090e);
+      }
+      if (this.wallMat) {
+        this.wallMat.color.setHex(0x05070a);
+      }
+    }
   }
 
   private buildDeskSetup(): void {
