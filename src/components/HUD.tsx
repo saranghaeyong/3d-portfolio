@@ -162,7 +162,7 @@ export const HUD: React.FC<HUDProps> = ({
           <Compass size={16} className="text-sky-400" />
           <div className="flex items-center space-x-2">
             <span className="text-sky-400 font-bold tracking-wider">
-              {currentStation.number} / 06
+              {currentStation.number} / 0{NAV_STATIONS.length}
             </span>
             <span className="text-slate-500">|</span>
             <span className="text-white font-semibold tracking-wider">

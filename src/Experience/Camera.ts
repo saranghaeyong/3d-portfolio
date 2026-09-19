@@ -38,15 +38,20 @@ export class Camera {
       target: new THREE.Vector3(0, 1.8, 0.2),
       fov: 48
     },
-    projects: {
-      position: new THREE.Vector3(2.6, 2.2, 4.2),
-      target: new THREE.Vector3(2.0, 1.6, 0.4),
-      fov: 48
-    },
     education: {
       position: new THREE.Vector3(-1.8, 2.8, 4.2),
       target: new THREE.Vector3(-1.4, 2.0, 0.2),
       fov: 46
+    },
+    certifications: {
+      position: new THREE.Vector3(-0.9, 2.4, 3.8),
+      target: new THREE.Vector3(-0.7, 1.8, 0.2),
+      fov: 46
+    },
+    projects: {
+      position: new THREE.Vector3(2.6, 2.2, 4.2),
+      target: new THREE.Vector3(2.0, 1.6, 0.4),
+      fov: 48
     },
     resume: {
       position: new THREE.Vector3(1.6, 2.6, 4.2),

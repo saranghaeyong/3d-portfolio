@@ -7,6 +7,7 @@ import { AboutPanel } from './components/AboutPanel';
 import { SkillsPanel } from './components/SkillsPanel';
 import { ProjectsPanel } from './components/ProjectsPanel';
 import { EducationPanel } from './components/EducationPanel';
+import { CertificationsPanel } from './components/CertificationsPanel';
 import { ResumeModal } from './components/ResumeModal';
 import { ContactPanel } from './components/ContactPanel';
 import { TerminalModal } from './components/TerminalModal';
@@ -88,12 +89,14 @@ export function App() {
 
       const numMap: Record<string, SectionId> = {
         '0': 'intro',
-        '1': 'about',
-        '2': 'skills',
-        '3': 'projects',
+        '1': 'intro',
+        '2': 'about',
+        '3': 'skills',
         '4': 'education',
-        '5': 'resume',
-        '6': 'contact'
+        '5': 'certifications',
+        '6': 'projects',
+        '7': 'resume',
+        '8': 'contact'
       };
 
       if (numMap[e.key]) {
@@ -194,6 +197,20 @@ export function App() {
         />
       )}
 
+      {hasEntered && activePanel === 'education' && (
+        <EducationPanel
+          onClose={() => setActivePanel(null)}
+          onNavigate={handleNavigate}
+        />
+      )}
+
+      {hasEntered && activePanel === 'certifications' && (
+        <CertificationsPanel
+          onClose={() => setActivePanel(null)}
+          onNavigate={handleNavigate}
+        />
+      )}
+
       {hasEntered && activePanel === 'projects' && (
         <ProjectsPanel
           initialProjectId={selectedProjectId}
@@ -201,13 +218,6 @@ export function App() {
             setActivePanel(null);
             setSelectedProjectId(undefined);
           }}
-          onNavigate={handleNavigate}
-        />
-      )}
-
-      {hasEntered && activePanel === 'education' && (
-        <EducationPanel
-          onClose={() => setActivePanel(null)}
           onNavigate={handleNavigate}
         />
       )}

@@ -69,16 +69,19 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ onClose, onNavigat
               <div className="space-y-1">
                 <div>AVAILABLE COMMANDS:</div>
                 <div className="text-sky-300">
-                  <span className="font-bold">about</span> - Navigate to candidate overview
+                  <span className="font-bold">about</span> - Candidate overview & academic history
                 </div>
                 <div className="text-sky-300">
                   <span className="font-bold">skills</span> - Inspect verified technical proficiencies
                 </div>
                 <div className="text-sky-300">
-                  <span className="font-bold">projects</span> - View academic and software implementations
+                  <span className="font-bold">education</span> - 3D academic timeline (MCA, BCA, Plus Two, 10th)
                 </div>
                 <div className="text-sky-300">
-                  <span className="font-bold">education</span> - Display CUSAT degree credentials
+                  <span className="font-bold">certifications</span> (or <span className="font-bold">certs</span>) - Computer training & diploma credentials
+                </div>
+                <div className="text-sky-300">
+                  <span className="font-bold">projects</span> - View academic and software implementations
                 </div>
                 <div className="text-sky-300">
                   <span className="font-bold">resume</span> - Open full digital CV
@@ -108,7 +111,7 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ onClose, onNavigat
         onNavigate('about');
         setLogs(prev => [
           ...prev,
-          { id, command: cmd, output: 'Navigating camera to 01 ABOUT...' }
+          { id, command: cmd, output: 'Navigating camera to 02 ABOUT...' }
         ]);
         break;
 
@@ -116,15 +119,7 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ onClose, onNavigat
         onNavigate('skills');
         setLogs(prev => [
           ...prev,
-          { id, command: cmd, output: 'Navigating camera to 02 SKILLS...' }
-        ]);
-        break;
-
-      case 'projects':
-        onNavigate('projects');
-        setLogs(prev => [
-          ...prev,
-          { id, command: cmd, output: 'Navigating camera to 03 PROJECTS...' }
+          { id, command: cmd, output: 'Navigating camera to 03 SKILLS...' }
         ]);
         break;
 
@@ -132,15 +127,42 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ onClose, onNavigat
         onNavigate('education');
         setLogs(prev => [
           ...prev,
-          { id, command: cmd, output: 'Navigating camera to 04 EDUCATION...' }
+          {
+            id,
+            command: cmd,
+            output: 'Navigating camera to 04 EDUCATION (MCA • BCA • Plus Two • 10th)...'
+          }
+        ]);
+        break;
+
+      case 'certifications':
+      case 'certs':
+      case 'training':
+        onNavigate('certifications');
+        setLogs(prev => [
+          ...prev,
+          {
+            id,
+            command: cmd,
+            output: 'Navigating camera to 05 COMPUTER TRAINING & CERTIFICATIONS (Softmedia)...'
+          }
+        ]);
+        break;
+
+      case 'projects':
+        onNavigate('projects');
+        setLogs(prev => [
+          ...prev,
+          { id, command: cmd, output: 'Navigating camera to 06 PROJECTS...' }
         ]);
         break;
 
       case 'resume':
+      case 'cv':
         onNavigate('resume');
         setLogs(prev => [
           ...prev,
-          { id, command: cmd, output: 'Opening 05 DIGITAL RESUME...' }
+          { id, command: cmd, output: 'Opening 07 DIGITAL RESUME / CV...' }
         ]);
         break;
 
@@ -148,7 +170,7 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ onClose, onNavigat
         onNavigate('contact');
         setLogs(prev => [
           ...prev,
-          { id, command: cmd, output: 'Navigating camera to 06 CONTACT...' }
+          { id, command: cmd, output: 'Navigating camera to 08 CONTACT...' }
         ]);
         break;
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { PERSONAL_DATA, SKILLS_DATA, PROJECTS_DATA } from '../data/portfolioData';
-import { Printer, Copy, Check, Mail, Phone, MapPin, X, ArrowRight, Download } from 'lucide-react';
+import { PERSONAL_DATA, SKILLS_DATA, PROJECTS_DATA, EDUCATION_DATA, CERTIFICATIONS_DATA } from '../data/portfolioData';
+import { Printer, Copy, Check, Mail, Phone, MapPin, X, ArrowRight, GraduationCap, FileBadge } from 'lucide-react';
 import { SoundEngine } from '../Experience/SoundEngine';
 import { SectionId } from '../types';
 
@@ -11,6 +11,39 @@ interface ResumeModalProps {
 
 export const ResumeModal: React.FC<ResumeModalProps> = ({ onClose, onNavigate }) => {
   const [copied, setCopied] = useState(false);
+
+  // Exact requested order: MCA -> BCA -> Plus Two -> 10th
+  const educationList = [
+    {
+      qualification: "Master of Computer Applications (MCA)",
+      institution: "Cochin University of Science and Technology (CUSAT)",
+      score: "CGPA: 7.66 / 10",
+      classification: "First Class",
+      duration: undefined
+    },
+    {
+      qualification: "Bachelor of Computer Applications (BCA)",
+      institution: "Bharata Mata College of Science and Arts",
+      score: "CCPA: 6.24 / 10",
+      classification: "B Class",
+      duration: "2019–2022"
+    },
+    {
+      qualification: "Higher Secondary / Plus Two",
+      stream: "Science Biology",
+      institution: "Cardinal Higher Secondary, Thrikkakara",
+      score: undefined,
+      classification: undefined,
+      duration: "2017–2019"
+    },
+    {
+      qualification: "High School / 10th",
+      institution: "St Alberts HS, Ernakulam",
+      score: undefined,
+      classification: undefined,
+      duration: "2012–2017"
+    }
+  ];
 
   const handleCopyText = () => {
     SoundEngine.getInstance().playClick();
@@ -28,9 +61,15 @@ Professional Summary:
 ${PERSONAL_DATA.resumeSummary}
 
 Education:
-${PERSONAL_DATA.education.degree}
-${PERSONAL_DATA.education.institution}
-CGPA: ${PERSONAL_DATA.education.cgpa} (${PERSONAL_DATA.education.classification})
+1. MCA — CUSAT — 7.66/10 — First Class
+2. BCA — Bharata Mata College of Science and Arts — 2019–2022 — CCPA 6.24/10 — B Class
+3. Plus Two — Science Biology — Cardinal Higher Secondary, Thrikkakara — 2017–2019
+4. 10th — St Alberts HS, Ernakulam — 2012–2017
+
+Computer Training & Certifications:
+- Diploma in Web Designing — Softmedia Computer Training — 2019
+- Desktop Publishing (DTP) — Softmedia Computer Training — 2018
+- Diploma in Computer Applications — Softmedia Computer Training — 2017
 
 Technical Competencies:
 - Languages: Python, Java, C
@@ -39,17 +78,17 @@ Technical Competencies:
 - AI / ML: Machine Learning, Artificial Intelligence
 - Version Control: Git, GitHub
 
-Academic & Applied Projects:
+Academic Projects:
 1. ${PROJECTS_DATA[0].title}
-   Tech: ${PROJECTS_DATA[0].technologies.join(', ')}
+   Technologies: ${PROJECTS_DATA[0].technologies.join(', ')}
    Summary: ${PROJECTS_DATA[0].description}
 
 2. ${PROJECTS_DATA[1].title}
-   Tech: ${PROJECTS_DATA[1].technologies.join(', ')}
+   Technologies: ${PROJECTS_DATA[1].technologies.join(', ')}
    Summary: ${PROJECTS_DATA[1].description}
 
 3. ${PROJECTS_DATA[2].title}
-   Tech: ${PROJECTS_DATA[2].technologies.join(', ')}
+   Technologies: ${PROJECTS_DATA[2].technologies.join(', ')}
    Summary: ${PROJECTS_DATA[2].description}
     `.trim();
 
@@ -66,17 +105,17 @@ Academic & Applied Projects:
   return (
     <div
       id="resume-modal-container"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-md animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-md animate-fade-in"
     >
       <div
         id="resume-modal"
-        className="relative w-full max-w-4xl max-h-[92vh] flex flex-col bg-slate-950 border border-slate-800 rounded-xl shadow-2xl text-slate-100 font-sans overflow-hidden"
+        className="relative w-full max-w-4xl max-h-[92vh] flex flex-col bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl text-slate-100 font-sans overflow-hidden"
       >
         {/* Top Control Bar */}
-        <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4 bg-slate-900/50">
+        <div className="flex items-center justify-between border-b border-slate-800/80 px-6 py-4 bg-slate-900/60">
           <div className="flex items-center space-x-3">
-            <span className="text-xs font-mono font-bold text-sky-400 border border-sky-900 bg-sky-950/40 px-2 py-0.5 rounded">
-              05
+            <span className="text-xs font-mono font-bold text-sky-400 border border-sky-900 bg-sky-950/50 px-2.5 py-1 rounded">
+              07
             </span>
             <span className="text-sm font-bold font-mono tracking-wider text-white uppercase">
               DIGITAL RESUME / CURRICULUM VITAE
@@ -87,7 +126,7 @@ Academic & Applied Projects:
             <button
               id="resume-copy-button"
               onClick={handleCopyText}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono rounded border border-slate-700 transition-colors cursor-pointer"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono rounded-lg border border-slate-700 transition-colors cursor-pointer"
               title="Copy plain formatted resume text"
             >
               {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
@@ -97,7 +136,7 @@ Academic & Applied Projects:
             <button
               id="resume-print-button"
               onClick={handlePrint}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-mono font-bold rounded transition-colors cursor-pointer"
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-mono font-bold rounded-lg transition-colors cursor-pointer"
               title="Print or Save as PDF"
             >
               <Printer size={14} />
@@ -110,7 +149,7 @@ Academic & Applied Projects:
                 SoundEngine.getInstance().playClick();
                 onClose();
               }}
-              className="text-slate-400 hover:text-white p-1 rounded-md hover:bg-slate-800 transition-colors cursor-pointer ml-2"
+              className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer ml-1"
             >
               <X size={20} />
             </button>
@@ -158,33 +197,130 @@ Academic & Applied Projects:
             <h2 className="text-xs font-mono uppercase tracking-wider text-sky-400 font-bold print:text-sky-800">
               PROFESSIONAL SUMMARY
             </h2>
-            <p className="text-sm text-slate-200 print:text-slate-800 leading-relaxed">
+            <p className="text-sm text-slate-200 print:text-slate-800 leading-relaxed bg-slate-900/30 print:bg-transparent p-3.5 print:p-0 rounded-lg border border-slate-800/80 print:border-none">
               {PERSONAL_DATA.resumeSummary}
             </p>
           </div>
 
-          {/* Education Section */}
+          {/* Education Section in Exact Specified Order */}
           <div className="space-y-3">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-sky-400 font-bold print:text-sky-800">
-              EDUCATION
+            <h2 className="text-xs font-mono uppercase tracking-wider text-sky-400 font-bold print:text-sky-800 flex items-center space-x-1.5">
+              <GraduationCap size={14} />
+              <span>EDUCATION</span>
             </h2>
-            <div className="bg-slate-900/50 print:bg-slate-50 border border-slate-800 print:border-slate-200 p-4 rounded-lg space-y-1">
-              <div className="flex flex-wrap items-center justify-between font-semibold text-sm text-white print:text-black">
-                <span>{PERSONAL_DATA.education.degree}</span>
-                <span className="text-sky-400 print:text-sky-800 font-mono text-xs">
-                  CGPA: {PERSONAL_DATA.education.cgpa} ({PERSONAL_DATA.education.classification})
-                </span>
+
+            <div className="space-y-2.5">
+              {/* 1. MCA */}
+              <div className="bg-slate-900/50 print:bg-slate-50 border border-slate-800 print:border-slate-200 p-3.5 rounded-lg">
+                <div className="flex flex-wrap items-center justify-between font-semibold text-sm text-white print:text-black">
+                  <span>1. Master of Computer Applications (MCA)</span>
+                  <span className="text-sky-400 print:text-sky-800 font-mono text-xs">
+                    CGPA: 7.66 / 10 &bull; First Class
+                  </span>
+                </div>
+                <div className="text-xs text-slate-300 print:text-slate-700 mt-0.5">
+                  Cochin University of Science and Technology (CUSAT)
+                </div>
               </div>
-              <div className="text-xs text-slate-300 print:text-slate-700">
-                {PERSONAL_DATA.education.institution}
+
+              {/* 2. BCA */}
+              <div className="bg-slate-900/50 print:bg-slate-50 border border-slate-800 print:border-slate-200 p-3.5 rounded-lg">
+                <div className="flex flex-wrap items-center justify-between font-semibold text-sm text-white print:text-black">
+                  <span>2. Bachelor of Computer Applications (BCA)</span>
+                  <span className="text-sky-400 print:text-sky-800 font-mono text-xs">
+                    CCPA: 6.24 / 10 &bull; B Class
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center justify-between text-xs text-slate-300 print:text-slate-700 mt-0.5">
+                  <span>Bharata Mata College of Science and Arts</span>
+                  <span className="font-mono text-slate-400 print:text-slate-600">Duration: 2019–2022</span>
+                </div>
               </div>
-              <p className="text-xs text-slate-400 print:text-slate-600 pt-1">
-                {PERSONAL_DATA.education.details}
-              </p>
+
+              {/* 3. Plus Two */}
+              <div className="bg-slate-900/50 print:bg-slate-50 border border-slate-800 print:border-slate-200 p-3.5 rounded-lg">
+                <div className="flex flex-wrap items-center justify-between font-semibold text-sm text-white print:text-black">
+                  <span>3. Higher Secondary / Plus Two (Science Biology)</span>
+                  <span className="font-mono text-xs text-slate-400 print:text-slate-600">
+                    Duration: 2017–2019
+                  </span>
+                </div>
+                <div className="text-xs text-slate-300 print:text-slate-700 mt-0.5">
+                  Cardinal Higher Secondary, Thrikkakara
+                </div>
+              </div>
+
+              {/* 4. 10th */}
+              <div className="bg-slate-900/50 print:bg-slate-50 border border-slate-800 print:border-slate-200 p-3.5 rounded-lg">
+                <div className="flex flex-wrap items-center justify-between font-semibold text-sm text-white print:text-black">
+                  <span>4. High School / 10th</span>
+                  <span className="font-mono text-xs text-slate-400 print:text-slate-600">
+                    Duration: 2012–2017
+                  </span>
+                </div>
+                <div className="text-xs text-slate-300 print:text-slate-700 mt-0.5">
+                  St Alberts HS, Ernakulam
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Skills Section */}
+          {/* Computer Training & Certifications Section */}
+          <div className="space-y-3">
+            <h2 className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold print:text-emerald-800 flex items-center space-x-1.5">
+              <FileBadge size={14} />
+              <span>COMPUTER TRAINING & CERTIFICATIONS</span>
+            </h2>
+
+            <div className="space-y-2.5">
+              {/* Diploma in Web Designing */}
+              <div className="bg-slate-900/50 print:bg-slate-50 border border-slate-800 print:border-slate-200 p-3.5 rounded-lg flex flex-wrap items-center justify-between">
+                <div>
+                  <div className="font-semibold text-sm text-white print:text-black">
+                    Diploma in Web Designing
+                  </div>
+                  <div className="text-xs text-slate-300 print:text-slate-700">
+                    Softmedia Computer Training
+                  </div>
+                </div>
+                <div className="text-xs font-mono text-emerald-400 print:text-emerald-800 font-bold">
+                  Year: 2019
+                </div>
+              </div>
+
+              {/* Desktop Publishing (DTP) */}
+              <div className="bg-slate-900/50 print:bg-slate-50 border border-slate-800 print:border-slate-200 p-3.5 rounded-lg flex flex-wrap items-center justify-between">
+                <div>
+                  <div className="font-semibold text-sm text-white print:text-black">
+                    Desktop Publishing (DTP)
+                  </div>
+                  <div className="text-xs text-slate-300 print:text-slate-700">
+                    Softmedia Computer Training
+                  </div>
+                </div>
+                <div className="text-xs font-mono text-emerald-400 print:text-emerald-800 font-bold">
+                  Year: 2018
+                </div>
+              </div>
+
+              {/* Diploma in Computer Applications */}
+              <div className="bg-slate-900/50 print:bg-slate-50 border border-slate-800 print:border-slate-200 p-3.5 rounded-lg flex flex-wrap items-center justify-between">
+                <div>
+                  <div className="font-semibold text-sm text-white print:text-black">
+                    Diploma in Computer Applications
+                  </div>
+                  <div className="text-xs text-slate-300 print:text-slate-700">
+                    Softmedia Computer Training
+                  </div>
+                </div>
+                <div className="text-xs font-mono text-emerald-400 print:text-emerald-800 font-bold">
+                  Year: 2017
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Technical Competencies Section */}
           <div className="space-y-3">
             <h2 className="text-xs font-mono uppercase tracking-wider text-sky-400 font-bold print:text-sky-800">
               TECHNICAL COMPETENCIES
@@ -251,16 +387,16 @@ Academic & Applied Projects:
         </div>
 
         {/* Footer Navigation */}
-        <div className="border-t border-slate-800 px-6 py-4 bg-slate-900/50 flex items-center justify-between">
+        <div className="border-t border-slate-800 px-6 py-4 bg-slate-900/50 flex items-center justify-between font-mono text-xs">
           <button
-            id="resume-nav-education-button"
+            id="resume-nav-projects-button"
             onClick={() => {
               SoundEngine.getInstance().playClick();
-              onNavigate('education');
+              onNavigate('projects');
             }}
-            className="text-xs font-mono text-slate-400 hover:text-white transition-colors cursor-pointer"
+            className="text-slate-400 hover:text-white transition-colors cursor-pointer"
           >
-            ← 04 EDUCATION
+            ← 06 PROJECTS
           </button>
 
           <button
@@ -269,9 +405,9 @@ Academic & Applied Projects:
               SoundEngine.getInstance().playClick();
               onNavigate('contact');
             }}
-            className="inline-flex items-center space-x-2 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-mono text-xs font-bold rounded transition-colors cursor-pointer"
+            className="inline-flex items-center space-x-2 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-lg transition-colors cursor-pointer"
           >
-            <span>PROCEED TO CONTACT (06)</span>
+            <span>PROCEED TO CONTACT (08)</span>
             <ArrowRight size={14} />
           </button>
         </div>

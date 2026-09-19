@@ -1,4 +1,4 @@
-import { ProjectItem, SkillItem, NavStation } from '../types';
+import { ProjectItem, SkillItem, NavStation, EducationItem, CertificationItem } from '../types';
 
 export const PERSONAL_DATA = {
   name: "SARANG R N",
@@ -13,39 +13,168 @@ export const PERSONAL_DATA = {
   
   about: {
     summary:
-      "Sarang R N is an MCA graduate with a foundation in software development, Python, Java, C, SQL/MySQL and modern web technologies, with a strong interest in machine learning and building practical software solutions.",
+      "Sarang R N is an MCA graduate with a solid academic foundation in software development, Python, Java, C, SQL/MySQL, and modern web technologies, combined with a strong interest in machine learning and building practical software solutions. His technical journey encompasses an MCA from Cochin University of Science and Technology (CUSAT), a BCA from Bharata Mata College of Science and Arts, Higher Secondary (Science Biology) from Cardinal Higher Secondary, Thrikkakara, secondary school from St Alberts HS, Ernakulam, along with professional computer training and certifications in Web Designing, Desktop Publishing, and Computer Applications from Softmedia Computer Training.",
     role: "Software Developer / Machine Learning Enthusiast",
-    education: "Master of Computer Applications",
+    education: "Master of Computer Applications (CUSAT)",
+    undergrad: "Bachelor of Computer Applications (Bharata Mata College)",
     location: "Kakkanad, Ernakulam, Kerala, India",
+    trainingInstitution: "Softmedia Computer Training",
     focus: [
       "Software Development",
-      "Python",
+      "Python & Algorithms",
       "Machine Learning",
+      "Database Systems",
       "Web Technologies"
+    ],
+    academicJourney: [
+      "MCA — Cochin University of Science and Technology (CUSAT)",
+      "BCA — Bharata Mata College of Science and Arts",
+      "Plus Two (Science Biology) — Cardinal Higher Secondary, Thrikkakara",
+      "10th — St Alberts HS, Ernakulam",
+      "Professional Computer Training — Softmedia Computer Training"
     ]
   },
 
-  education: {
-    degree: "MASTER OF COMPUTER APPLICATIONS",
-    institution: "Cochin University of Science and Technology (CUSAT)",
+  educationOverview: {
+    highestDegree: "Master of Computer Applications (MCA)",
+    highestInstitution: "Cochin University of Science and Technology (CUSAT)",
     cgpa: "7.66 / 10",
-    classification: "First Class",
-    details:
-      "Comprehensive academic curriculum focusing on software architecture, object-oriented programming, relational database engineering, algorithm analysis, and machine learning foundations."
+    classification: "First Class"
   },
 
   resumeSummary:
-    "MCA graduate from Cochin University of Science and Technology with a CGPA of 7.66/10 (First Class), with a foundation in Python, Java, C, SQL/MySQL, and web technologies. Strong academic project experience in machine learning and software development, with an interest in building practical and interactive software solutions."
+    "MCA graduate from Cochin University of Science and Technology with a CGPA of 7.66/10 (First Class), holding a BCA from Bharata Mata College of Science and Arts (CCPA 6.24/10, B Class). Grounded in Python, Java, C, SQL/MySQL, and web technologies with certified professional training in Web Designing, DTP, and Computer Applications from Softmedia Computer Training. Strong academic project experience in machine learning and software development, with an interest in building practical and interactive software solutions."
 };
 
 export const NAV_STATIONS: NavStation[] = [
-  { id: 'intro', number: '00', label: 'OVERVIEW', objectName: 'StationDesk' },
-  { id: 'about', number: '01', label: 'ABOUT', objectName: 'StationAbout' },
-  { id: 'skills', number: '02', label: 'SKILLS', objectName: 'StationSkills' },
-  { id: 'projects', number: '03', label: 'PROJECTS', objectName: 'StationProjects' },
+  { id: 'intro', number: '01', label: 'HOME', objectName: 'StationDesk' },
+  { id: 'about', number: '02', label: 'ABOUT', objectName: 'StationAbout' },
+  { id: 'skills', number: '03', label: 'SKILLS', objectName: 'StationSkills' },
   { id: 'education', number: '04', label: 'EDUCATION', objectName: 'StationEducation' },
-  { id: 'resume', number: '05', label: 'RESUME', objectName: 'StationResume' },
-  { id: 'contact', number: '06', label: 'CONTACT', objectName: 'StationContact' },
+  { id: 'certifications', number: '05', label: 'CERTIFICATIONS', objectName: 'StationCertifications' },
+  { id: 'projects', number: '06', label: 'PROJECTS', objectName: 'StationProjects' },
+  { id: 'resume', number: '07', label: 'RESUME', objectName: 'StationResume' },
+  { id: 'contact', number: '08', label: 'CONTACT', objectName: 'StationContact' },
+];
+
+export const EDUCATION_DATA: EducationItem[] = [
+  {
+    id: "edu-mca",
+    order: 4,
+    qualification: "Master of Computer Applications (MCA)",
+    degreeCode: "MCA",
+    institution: "Cochin University of Science and Technology (CUSAT)",
+    score: "7.66 / 10",
+    scoreType: "CGPA",
+    classification: "First Class",
+    isHighest: true,
+    shortDescription:
+      "Advanced postgraduate program specializing in software architecture, algorithms, relational database systems, and machine learning foundations.",
+    highlights: [
+      "Highest Academic Qualification",
+      "CGPA: 7.66/10 (First Class)",
+      "Cochin University of Science and Technology"
+    ]
+  },
+  {
+    id: "edu-bca",
+    order: 3,
+    qualification: "Bachelor of Computer Applications (BCA)",
+    degreeCode: "BCA",
+    institution: "Bharata Mata College of Science and Arts",
+    duration: "2019–2022",
+    year: "2019–2022",
+    score: "6.24 / 10",
+    scoreType: "CCPA",
+    classification: "B Class",
+    isHighest: false,
+    shortDescription:
+      "Undergraduate computer applications degree providing rigorous foundations in programming languages, object-oriented concepts, relational databases, and operating systems.",
+    highlights: [
+      "Duration: 2019–2022",
+      "CCPA: 6.24/10",
+      "Class: B Class"
+    ]
+  },
+  {
+    id: "edu-plustwo",
+    order: 2,
+    qualification: "Higher Secondary / Plus Two",
+    degreeCode: "PLUS TWO",
+    stream: "Science Biology",
+    institution: "Cardinal Higher Secondary, Thrikkakara",
+    duration: "2017–2019",
+    year: "2017–2019",
+    isHighest: false,
+    shortDescription:
+      "Higher secondary education focused on Science Biology, building scientific methodology, logical reasoning, and mathematics principles.",
+    highlights: [
+      "Stream: Science Biology",
+      "Duration: 2017–2019",
+      "Thrikkakara, Ernakulam"
+    ]
+  },
+  {
+    id: "edu-10th",
+    order: 1,
+    qualification: "High School / 10th",
+    degreeCode: "10TH",
+    institution: "St Alberts HS, Ernakulam",
+    duration: "2012–2017",
+    year: "2012–2017",
+    isHighest: false,
+    shortDescription:
+      "Secondary school education establishing foundational analytical skills, mathematics, general sciences, and language comprehension.",
+    highlights: [
+      "Duration: 2012–2017",
+      "Ernakulam, Kerala"
+    ]
+  }
+];
+
+export const CERTIFICATIONS_DATA: CertificationItem[] = [
+  {
+    id: "cert-web",
+    title: "Diploma in Web Designing",
+    credentialType: "DIPLOMA",
+    institution: "Softmedia Computer Training",
+    year: "2019",
+    shortDescription:
+      "Comprehensive training in modern web design, UI layout structuring, visual hierarchy, and client-side web markup technologies.",
+    competencies: [
+      "Web Layout Design",
+      "HTML & CSS UI Structuring",
+      "Digital Interface Composition"
+    ]
+  },
+  {
+    id: "cert-dtp",
+    title: "Desktop Publishing (DTP)",
+    credentialType: "CERTIFICATION",
+    institution: "Softmedia Computer Training",
+    year: "2018",
+    shortDescription:
+      "Professional curriculum in digital publication composition, typography, print and digital media layout, and graphic document management.",
+    competencies: [
+      "Desktop Publishing (DTP)",
+      "Document Structuring",
+      "Graphic Typography"
+    ]
+  },
+  {
+    id: "cert-dca",
+    title: "Diploma in Computer Applications",
+    credentialType: "DIPLOMA",
+    institution: "Softmedia Computer Training",
+    year: "2017",
+    shortDescription:
+      "Foundational computer training covering computer operations, standard software applications, digital documentation, and computing essentials.",
+    competencies: [
+      "Computer Applications",
+      "Digital Office Utilities",
+      "Operating System Essentials"
+    ]
+  }
 ];
 
 export const SKILLS_DATA: SkillItem[] = [

@@ -59,6 +59,7 @@ export class DeveloperWorkspace {
     this.buildProfileCard();
     this.buildServerRack();
     this.buildDeveloperProps();
+    this.buildCertificationStation();
     this.buildProjectCards();
     this.buildNavigationBeacons();
     this.buildParticles(quality);
@@ -529,15 +530,96 @@ export class DeveloperWorkspace {
     });
   }
 
+  private buildCertificationStation(): void {
+    // 3D Floating Certificate Plaque
+    const certGroup = new THREE.Group();
+    certGroup.position.set(-0.85, 1.8, 0.1);
+    certGroup.rotation.y = 0.22;
+
+    const frameGeo = new THREE.BoxGeometry(0.85, 0.58, 0.03);
+    const frameMat = new THREE.MeshStandardMaterial({
+      color: 0x0a101f,
+      metalness: 0.8,
+      roughness: 0.2
+    });
+    const frameMesh = new THREE.Mesh(frameGeo, frameMat);
+    certGroup.add(frameMesh);
+
+    const edgeGeo = new THREE.EdgesGeometry(frameGeo);
+    const edgeMat = new THREE.LineBasicMaterial({ color: 0x38bdf8 });
+    const wire = new THREE.LineSegments(edgeGeo, edgeMat);
+    certGroup.add(wire);
+
+    // Canvas with certification credentials
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 340;
+    const ctx = canvas.getContext('2d')!;
+
+    ctx.fillStyle = '#060a14';
+    ctx.fillRect(0, 0, 512, 340);
+
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(6, 6, 500, 328);
+
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(8, 8, 496, 45);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 18px monospace';
+    ctx.fillText('COMPUTER TRAINING & CERTIFICATIONS', 20, 36);
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '14px monospace';
+    ctx.fillText('INSTITUTION: SOFTMEDIA COMPUTER TRAINING', 20, 85);
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 16px monospace';
+    ctx.fillText('• 2019 — DIPLOMA IN WEB DESIGNING', 20, 130);
+    ctx.fillText('• 2018 — DESKTOP PUBLISHING (DTP)', 20, 175);
+    ctx.fillText('• 2017 — DIPLOMA IN COMPUTER APPLICATIONS', 20, 220);
+
+    ctx.fillStyle = '#10b981';
+    ctx.font = 'bold 13px monospace';
+    ctx.fillText('[ VERIFIED CREDENTIALS • CLICK TO INSPECT ]', 20, 290);
+
+    const tex = new THREE.CanvasTexture(canvas);
+    const plaqueMesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.81, 0.54),
+      new THREE.MeshBasicMaterial({ map: tex })
+    );
+    plaqueMesh.position.z = 0.018;
+
+    plaqueMesh.userData = {
+      label: '05 — COMPUTER TRAINING & CERTIFICATIONS',
+      sectionId: 'certifications',
+      type: 'navigation'
+    } as InteractiveObjectData;
+
+    this.interactiveObjects.push(plaqueMesh);
+    certGroup.add(plaqueMesh);
+
+    this.floatingItems.push({
+      mesh: certGroup,
+      baseY: 1.8,
+      speed: 1.2,
+      amp: 0.025
+    });
+
+    this.group.add(certGroup);
+  }
+
   private buildNavigationBeacons(): void {
-    // 3D Floating Beacons representing the 6 primary navigation locations
+    // 3D Floating Beacons representing the primary navigation locations
     const stations: { id: SectionId; name: string; pos: [number, number, number] }[] = [
-      { id: 'about', name: '01 ABOUT', pos: [-2.1, 2.8, 0.4] },
-      { id: 'skills', name: '02 SKILLS', pos: [0, 2.65, -0.3] },
-      { id: 'projects', name: '03 PROJECTS', pos: [2.2, 2.4, 0.4] },
+      { id: 'about', name: '02 ABOUT', pos: [-2.1, 2.8, 0.4] },
+      { id: 'skills', name: '03 SKILLS', pos: [0, 2.65, -0.3] },
       { id: 'education', name: '04 EDUCATION', pos: [-1.4, 2.7, -0.2] },
-      { id: 'resume', name: '05 RESUME', pos: [1.3, 2.4, -0.1] },
-      { id: 'contact', name: '06 CONTACT', pos: [0, 1.45, 0.9] }
+      { id: 'certifications', name: '05 CERTS', pos: [-0.65, 2.45, -0.15] },
+      { id: 'projects', name: '06 PROJECTS', pos: [2.2, 2.4, 0.4] },
+      { id: 'resume', name: '07 RESUME', pos: [1.3, 2.4, -0.1] },
+      { id: 'contact', name: '08 CONTACT', pos: [0, 1.45, 0.9] }
     ];
 
     stations.forEach((st, idx) => {
@@ -826,19 +908,27 @@ export class DeveloperWorkspace {
 
     ctx.fillStyle = '#64748b';
     ctx.font = '12px monospace';
-    ctx.fillText('ACADEMIC QUALIFICATION', 40, 325);
+    ctx.fillText('ACADEMIC QUALIFICATIONS & DEGREE', 40, 320);
 
     ctx.fillStyle = '#f8fafc';
-    ctx.font = 'bold 16px sans-serif';
-    ctx.fillText('COCHIN UNIVERSITY (CUSAT)', 40, 355);
+    ctx.font = 'bold 15px sans-serif';
+    ctx.fillText('MCA — Cochin University (CUSAT)', 40, 345);
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px sans-serif';
+    ctx.fillText('BCA — Bharata Mata College (2019-22)', 40, 370);
 
     ctx.fillStyle = '#38bdf8';
-    ctx.font = 'bold 20px monospace';
-    ctx.fillText('CGPA: 7.66 / 10', 40, 395);
+    ctx.font = 'bold 16px monospace';
+    ctx.fillText('MCA CGPA: 7.66 / 10', 40, 405);
 
     ctx.fillStyle = '#10b981';
-    ctx.font = 'bold 14px monospace';
-    ctx.fillText('[ FIRST CLASS ]', 260, 395);
+    ctx.font = 'bold 13px monospace';
+    ctx.fillText('[ FIRST CLASS ]', 250, 405);
+
+    ctx.fillStyle = '#64748b';
+    ctx.font = '11px monospace';
+    ctx.fillText('Certifications: Softmedia Computer Training (Web/DTP/DCA)', 40, 430);
 
     // Skills pill tags
     ctx.fillStyle = '#64748b';
